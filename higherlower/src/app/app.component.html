@@ -1,8 +1,49 @@
-<div>
-    <h1>{{ title }}</h1>
-    <p>{{ description }}</p>
-    <input type="text" placeholder="Search cards" [(ngModel)]="searchTerm" />
-    <div *ngFor="let card of filteredCards()">
-      <p>{{ card.suit }} - {{ card.name }} (Rank: {{ card.rank }})</p>
+<div class="container mt-4">
+  <h1 class="text-center">{{ title }}</h1>
+  <p class="text-center">{{ description }}</p>
+
+
+  <div class="mb-3 text-center">
+    <button class="btn btn-primary me-2" (click)="sortCards('rank')">Sort by rank</button>
+    <button class="btn btn-secondary" (click)="sortCards('suit')">Sort by type</button>
+  </div>
+
+
+  <input type="text" class="form-control mb-3" placeholder="Search cards" [(ngModel)]="searchTerm" />
+
+  
+  <div class="row">
+    <div 
+      class="col-md-4 mb-3 animate__animated animate__fadeIn" 
+      *ngFor="let card of filteredCards()"
+      (click)="showCardDetails(card)">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">{{ card.suit }}</h5>
+          <p class="card-text">{{ card.name }} (Rank: {{ card.rank }})</p>
+        </div>
+      </div>
     </div>
   </div>
+
+  
+  <div class="modal" tabindex="-1" *ngIf="selectedCard" style="display: block;">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">{{ selectedCard?.name }} Details</h5>
+          <button type="button" class="btn-close" aria-label="Close" (click)="closeDialog()"></button>
+        </div>
+        <div class="modal-body">
+          <p><strong>Suit:</strong> {{ selectedCard?.suit }}</p>
+          <p><strong>Rank:</strong> {{ selectedCard?.rank }}</p>
+          <p><strong>History:</strong> {{ selectedCard?.history }}</p>
+          <p><strong>Value:</strong> {{ selectedCard?.value }}</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closeDialog()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

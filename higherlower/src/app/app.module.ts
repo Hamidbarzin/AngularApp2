@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms'; // اضافه کردن این خط
+import { FormsModule } from '@angular/forms'; 
+
 import { AppComponent } from './app.component';
 
 @NgModule({
@@ -9,7 +10,7 @@ import { AppComponent } from './app.component';
   ],
   imports: [
     BrowserModule,
-    FormsModule // اضافه کردن این ماژول
+    FormsModule 
   ],
   providers: [],
   bootstrap: [AppComponent]

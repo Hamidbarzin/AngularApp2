@@ -1,22 +1,50 @@
-import { Component } from "@angular/core";
-import { Model } from "./repository.model";
-import { Card } from "./card.model";
+import { Component } from '@angular/core';
+import { SimpleDataSource } from './datasource.model';
+import { Card } from './card.model';
 
 @Component({
-    selector: "app",
-    templateUrl: "template.html"
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
 })
-export class CardComponent {
-    model: Model = new Model();
-    randomCard: Card;
+export class AppComponent {
+  title = 'higherlower';
+  description = 'This is a sample card description that should be displayed!';
+  cards: Card[];
+  searchTerm: string = '';
+  sortType: string = 'rank'; 
+  selectedCard: Card | null = null; 
 
-    constructor() {
-        // Ensure randomCard always has a value by setting it in the constructor
-        this.randomCard = this.model.getRandomCardById() || this.getFallbackCard();
-    }
+  constructor() {
+    const dataSource = new SimpleDataSource();
+    this.cards = dataSource.getData();
+  }
 
-    // Optional fallback card in case the deck is empty
-    private getFallbackCard(): Card {
-        return new Card(0, "None", "No cards available", 0);
-    }
+  
+  filteredCards(): Card[] {
+    let filtered = this.cards.filter(card => 
+      card.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+      card.suit.toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
+
+    
+    return this.sortType === 'rank' 
+      ? filtered.sort((a, b) => a.rank - b.rank)
+      : filtered.sort((a, b) => a.suit.localeCompare(b.suit));
+  }
+
+  
+  sortCards(type: string) {
+    this.sortType = type;
+  }
+
+  
+  showCardDetails(card: Card) {
+    this.selectedCard = card;
+  }
+
+  
+  closeDialog() {
+    this.selectedCard = null;
+  }
 }
